@@ -59,6 +59,20 @@ export default function Dashboard() {
             <Text style={styles.actionText}>Add Order</Text>
           </TouchableOpacity>
 
+          <TouchableOpacity 
+            style={styles.actionButton}
+            onPress={() => router.push('/(drawer)/customers')}
+          >
+            <Text style={styles.actionText}>Customers</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={styles.actionButton}
+            onPress={() => router.push('/(drawer)/driver/driver')}
+          >
+            <Text style={styles.actionText}>Drivers</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity style={styles.actionButton}>
             <Text style={styles.actionText}>View Reports</Text>
           </TouchableOpacity>
