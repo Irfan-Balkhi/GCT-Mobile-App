@@ -68,7 +68,7 @@ export default function Dashboard() {
 
           <TouchableOpacity 
             style={styles.actionButton}
-            onPress={() => router.push('/(drawer)/driver/driver')}
+            onPress={() => router.push('/(drawer)/drivers')}
           >
             <Text style={styles.actionText}>Drivers</Text>
           </TouchableOpacity>

@@ -24,34 +24,7 @@ export default function EditCustomer() {
   const [loading, setLoading] = useState(true);
 
 
-  
-  // useEffect(() => {
-  //   if (!id) return;
-
-  //   const loadCustomer = async () => {
-  //     try {
-  //       const snap = await getDoc(doc(db, "customers", id));
-
-  //       if (snap.exists()) {
-  //         const data = snap.data();
-  //         setName(data.name || "");
-  //         setPhone(data.phone || "");
-  //       } else {
-  //         Alert.alert("Error", "Customer not found");
-  //         router.back();
-  //       }
-  //     } catch (err) {
-  //       console.error(err);
-  //       Alert.alert("Error", "Failed to load customer");
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   };
-
-  //   loadCustomer();
-  // }, [id]);
-
-useFocusEffect(
+  useFocusEffect(
     useCallback(() => {
       let isActive = true;
 
@@ -138,6 +111,13 @@ useFocusEffect(
       <TouchableOpacity style={styles.button} onPress={handleUpdate}>
         <Text style={styles.buttonText}>Update Customer</Text>
       </TouchableOpacity>
+      {/* BACK */}
+      <TouchableOpacity
+        style={styles.backBtn}
+        onPress={() => router.replace("/(drawer)/customers")}
+      >
+        <Text style={styles.saveText}>Back</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -169,12 +149,24 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   button: {
-    backgroundColor: "#4471ee",
+    backgroundColor: "#0ac700",
     padding: 15,
     borderRadius: 12,
     alignItems: "center",
   },
+  backBtn: {
+    backgroundColor: "#ee5844",
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: "center",
+    marginTop: 10,
+  },
   buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  saveText: {
     color: "#fff",
     fontWeight: "bold",
     fontSize: 16,
