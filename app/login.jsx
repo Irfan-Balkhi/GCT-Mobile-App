@@ -1,6 +1,5 @@
 // import { useState } from 'react';
 // import { loginUser } from '../firebase/auth';
-// import { getUserRole } from '../firebase/users';
 
 // import { View, Text, TextInput, Button } from 'react-native';
 // import { router } from 'expo-router';

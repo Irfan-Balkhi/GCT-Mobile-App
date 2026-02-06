@@ -32,12 +32,20 @@ export default function CustomDrawer(props) {
 
         <TouchableOpacity
           style={styles.item}
-          onPress={() => props.navigation.navigate('profile')}
+          onPress={() => props.navigation.navigate('users/index')}
+        >
+          <FontAwesome5 name="users" size={18} color="white" />
+          <Text style={styles.text}>User</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.item}
+          onPress={() => props.navigation.navigate('profiles/index')}
         >
           <FontAwesome5 name="user" size={18} color="white" />
           <Text style={styles.text}>Profile</Text>
         </TouchableOpacity>
-
+        
         <TouchableOpacity
           style={styles.item}
           onPress={() => props.navigation.navigate('settings')}

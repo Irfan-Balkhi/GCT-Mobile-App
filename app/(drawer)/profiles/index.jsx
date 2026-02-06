@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,49 +8,94 @@ import {
   Image,
 } from 'react-native';
 
-import { FontAwesome5, MaterialIcons, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import {
+  FontAwesome5,
+  MaterialIcons,
+  Ionicons,
+  MaterialCommunityIcons,
+} from '@expo/vector-icons';
+
+import app from '../../../firebase/config';
+import { getAuth } from 'firebase/auth';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
+import { useRouter } from 'expo-router';
+
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 export default function Profile() {
+  const [name, setName] = useState('');
+  const router = useRouter();
+  
+  useEffect(() => {
+    const fetchUserName = async () => {
+      if (!auth.currentUser) return;
+
+      try {
+        const uid = auth.currentUser.uid;
+        const userRef = doc(db, 'users', uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+          setName(userSnap.data().name || '');
+        }
+      } catch (error) {
+        console.log('Failed to fetch user name:', error);
+      }
+    };
+
+    fetchUserName();
+  }, []);
+
   return (
     <View style={styles.container}>
       <ScrollView>
 
         {/* ===== Profile Header ===== */}
         <View style={styles.header}>
-          {/* <Image
-            source={require('../../assets/profile.png')} // add any avatar
-            style={styles.avatar}
-          /> */}
-          <Text style={styles.name}>کمال الدین کمال</Text>
+
+        {/* Back Button */}
+        <TouchableOpacity
+          style={styles.headerBackButton}
+          onPress={() => router.replace("/dashboard")}
+        >
+          <FontAwesome5 name="arrow-left" size={18} color="#2563eb" />
+        </TouchableOpacity>
+
+        {/* Centered Content */}
+        <View style={styles.headerCenter}>
+          <Text style={styles.name}>{name || "User"}</Text>
           <Text style={styles.role}>Operations Manager</Text>
         </View>
 
+      </View>
+
         {/* ===== Profile Details ===== */}
         <View style={styles.detailsCard}>
-          <DetailRow icon="email" label="Email" value="kamal@paiman.com" />
-          <DetailRow icon="phone" label="Phone" value="+93 787 40 71 40" />
-          {/* <DetailRow icon="office-building" label="Role" value="Paiman Ltd" /> */}
-          <DetailRow icon="account-badge" label="Role" value="Admin" lib="MaterialCommunityIcons" />
+          <DetailRow
+            icon="email"
+            label="Email"
+            value={auth.currentUser?.email}
+          />
+          <DetailRow
+            icon="phone"
+            label="Phone"
+            value="+93 787 40 71 40"
+          />
+          <DetailRow
+            icon="account-badge"
+            label="Role"
+            value="Admin"
+            lib="MaterialCommunityIcons"
+          />
         </View>
 
-        {/* ===== Stats (Optional) ===== */}
-        {/* <View style={styles.cardsContainer}>
-          <View style={[styles.card, { backgroundColor: '#16a34a' }]}>
-            <FontAwesome5 name="check-circle" size={24} color="#fff" />
-            <Text style={styles.cardTitle}>Completed</Text>
-            <Text style={styles.cardNumber}>30</Text>
-          </View>
-
-          <View style={[styles.card, { backgroundColor: '#dc2626' }]}>
-            <FontAwesome5 name="times-circle" size={24} color="#fff" />
-            <Text style={styles.cardTitle}>Rejected</Text>
-            <Text style={styles.cardNumber}>5</Text>
-          </View>
-        </View> */}
-
-        {/* ===== Actions (2–3 buttons only) ===== */}
+        {/* ===== Actions ===== */}
         <View style={styles.actionsContainer}>
-          <TouchableOpacity style={styles.actionButton}>
+         <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => router.push(`/(drawer)/users/${user.id}/edit`)}
+          >
             <Ionicons name="create-outline" size={20} color="#fff" />
             <Text style={styles.actionText}>Edit Profile</Text>
           </TouchableOpacity>
@@ -61,8 +106,7 @@ export default function Profile() {
           </TouchableOpacity>
 
           <TouchableOpacity style={[styles.actionButton, styles.logout]}>
-            {/* <MaterialIcons name="times-circle" size={20} color="#fff" /> */}
-            <FontAwesome5 name="times-circle" size={18} color="white"/>
+            <FontAwesome5 name="times-circle" size={18} color="white" />
             <Text style={styles.actionText}>Delete Account</Text>
           </TouchableOpacity>
         </View>
@@ -82,7 +126,11 @@ export default function Profile() {
 
 /* ===== Reusable Detail Row ===== */
 function DetailRow({ icon, label, value, lib = 'MaterialIcons' }) {
-  const IconComponent = lib === 'MaterialCommunityIcons' ? MaterialCommunityIcons : MaterialIcons;
+  const IconComponent =
+    lib === 'MaterialCommunityIcons'
+      ? MaterialCommunityIcons
+      : MaterialIcons;
+
   return (
     <View style={styles.detailRow}>
       <IconComponent name={icon} size={20} color="#475569" />
@@ -92,7 +140,6 @@ function DetailRow({ icon, label, value, lib = 'MaterialIcons' }) {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -100,12 +147,37 @@ const styles = StyleSheet.create({
   },
 
   header: {
-    backgroundColor: '#1e293b',
-    alignItems: 'center',
-    padding: 24,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+  backgroundColor: "#1e293b",
+  paddingTop: 24,
+  paddingBottom: 20,
+  alignItems: "center",
+  position: "relative",
+  borderBottomLeftRadius: 20,
+  borderBottomRightRadius: 20,
+},
+
+  headerBackButton: {
+    position: "absolute",
+    left: 16,
+    top: 26,
+    padding: 8,
   },
+
+  headerCenter: {
+    alignItems: "center",
+  },
+
+  name: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+
+  role: {
+    color: "#cbd5e1",
+    marginTop: 4,
+  },
+
   avatar: {
     width: 90,
     height: 90,
@@ -141,28 +213,6 @@ const styles = StyleSheet.create({
   detailValue: {
     color: '#0f172a',
     fontWeight: '600',
-  },
-
-  cardsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    marginTop: 10,
-  },
-  card: {
-    width: '48%',
-    padding: 14,
-    borderRadius: 14,
-    alignItems: 'center',
-  },
-  cardTitle: {
-    color: '#fff',
-    marginTop: 6,
-  },
-  cardNumber: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
   },
 
   actionsContainer: {

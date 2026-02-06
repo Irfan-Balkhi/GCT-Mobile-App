@@ -63,13 +63,27 @@ export default function Dashboard() {
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.card, { backgroundColor: '#e79405' }]}>
+          <TouchableOpacity style={[styles.card, { backgroundColor: '#bcb40a' }]}>
             <MaterialIcons name="shopping-cart" size={28} color="#fff" />
             <Text style={styles.cardTitle}>Loading</Text>
             <Text style={styles.cardNumber}>45</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.card, { backgroundColor: '#04bd0a' }]}>
+{/* money-bill-wave */}
+          {/* Middle Row - Payment card full width */}
+          <TouchableOpacity style={[styles.paymentCard]}>
+            <View style={styles.paymentLeft}>
+              <FontAwesome5 name="credit-card" size={32} color="#fff" />
+              <Text style={styles.paymentTitle}>Payment</Text>
+            </View>
+            <View style={styles.paymentRight}>
+              <Text style={styles.paymentText}>USD: 1234$</Text>
+              <Text style={styles.paymentText}>UZS: 123233$</Text>
+              <Text style={styles.paymentText}>Bank: 123124$</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={[styles.card, { backgroundColor: '#05ad0a' }]}>
             <FontAwesome5 name="truck-loading" size={28} color="#fff" />
             <Text style={styles.cardTitle}>Completed</Text>
             <Text style={styles.cardNumber}>30</Text>
@@ -130,16 +144,72 @@ export default function Dashboard() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f1f5f9' },
-  header: { backgroundColor: '#1e293b', padding: 20, borderBottomLeftRadius: 20, borderBottomRightRadius: 20 },
+
+  header: {
+    backgroundColor: '#1e293b',
+    padding: 20,
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+  },
   headerTitle: { color: '#fff', fontSize: 22, fontWeight: 'bold' },
   headerSubtitle: { color: '#e5e7eb', marginTop: 6 },
-  cardsContainer: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: 20, paddingHorizontal: 16 },
-  card: { width: '48%', padding: 12, borderRadius: 14, alignItems: 'center', marginBottom: 16 },
-  cardTitle: { color: '#fff', marginTop: 6 },
-  cardNumber: { color: '#fff', fontSize: 18, fontWeight: 'bold' },
+
+  // Cards container
+    cardsContainer: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', marginTop: 20, paddingHorizontal: 16 },
+  // cardsContainer: { marginTop: 20, paddingHorizontal: 16 },
+
+  // Row container for top and bottom
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+
+  // Regular cards (top/bottom)
+  card: {
+    width: '48%',
+    padding: 16,
+    borderRadius: 14,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 120,
+    marginBottom: 16,
+
+  },
+  cardTitle: { color: '#fff', marginTop: 6, fontSize: 16, fontWeight: '600' },
+  cardNumber: { color: '#fff', fontSize: 20, fontWeight: 'bold' },
+
+  // Payment card (middle)
+  paymentCard: {
+    flexDirection: 'row',
+    backgroundColor: '#f07f06',
+    borderRadius: 14,
+    padding: 30,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+    height: 160,
+    width: '100%',
+    // marginTop: 16,
+  },
+  paymentLeft: { flexDirection: 'row', alignItems: 'center' },
+  paymentTitle: { color: '#fff', fontSize: 20, fontWeight: 'bold', marginLeft: 12 },
+  paymentRight: { alignItems: 'flex-end' },
+  paymentText: { color: '#fff', fontWeight: '600', fontSize: 16 },
+
+  // Actions section
   actionsContainer: { marginTop: 30, paddingHorizontal: 16 },
-  actionButton: { backgroundColor: '#064276', padding: 16, borderRadius: 12, marginBottom: 12, elevation: 2, alignItems: 'center' },
+  actionButton: {
+    backgroundColor: '#064276',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+    elevation: 2,
+    alignItems: 'center',
+  },
   actionText: { fontWeight: '600', color: '#fff' },
+
+  // Footer
   footer: { marginTop: 30, alignItems: 'center', paddingBottom: 20 },
   footerText: { fontSize: 12, color: '#64748b' },
 });
